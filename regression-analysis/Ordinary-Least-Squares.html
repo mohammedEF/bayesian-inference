@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="chapter" content="ra">
+
+    <!-- For Facebook Sharing -->
+    <meta property="og:url" content="http://students.brown.edu/seeing-theory/regression-analysis/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Regression Analysis" />
+    <meta property="og:description" content="Linear regression is an approach for modeling the linear relationship between two variables." />
+    <meta property="og:image" content="http://students.brown.edu/seeing-theory/img/share/6.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+
+
+    <title>Seeing Theory - Regression Analysis</title>
+    <!-- CSS Imports -->
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Assistant:300,400,600,700" rel="stylesheet">
+    <!--Font Awesome-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="../img/favicon.png" />
+    <!-- General Chapter -->
+    <link rel="stylesheet" type="text/css" href="../css/chapter-style.css">
+    <!-- Specific Chapter -->
+    <link rel="stylesheet" type="text/css" href="regression.css">
+    <!-- JavaScript Imports -->
+    <!-- D3 -->
+    <script src="../js/d3.min.js"></script>
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- jstat -->
+    <script src="../js/jstat.min.js"></script>
+    <!-- MathJax -->
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- Tool Tip -->
+    <script src="../js/d3.tip.v0.6.3.js"></script>
+    <!-- General Chapter -->
+    <script src="../js/chapter.js"></script>
+    <!-- Visualizations -->
+    <script src="regression.js"></script>
+    <!-- Google Analytics -->
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-85617614-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+
+<body id='1'>
+    <div id="share-modal"></div>
+    <div class="header">
+    </div>
+    <div class="col-left">
+        <div class="col-left-wrapper">
+            <div id="section0">
+
+                
+            </div>
+            <div id="section1">
+                <div class="unit">
+                    <h3>Ordinary Least Squares</h3>
+                    
+                    <p>Choose one of the quartets to investigate.</p>
+                    <div class="interactive-wrapper">
+                        <form id="datasetsOls" class="form-board">
+                            <label class="radio-inline ra-radio">I
+                                <input type="radio" name="ols" value="0">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="radio-inline ra-radio">II
+                                <input type="radio" name="ols" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="radio-inline ra-radio">III
+                                <input type="radio" name="ols" value="2">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="radio-inline ra-radio">IV
+                                <input type="radio" name="ols" value="3">
+                                <span class="checkmark"></span>
+                            </label>
+                        </form>
+                    </div>
+                    <p>Drag and drop data points to explore how this affects the OLS line.</p>
+                    <p>Click on a column of the regression table to learn more about this parameter.</p>
+                    <div class="interactive-wrapper">
+                        <table id="table_ols" style="cursor:pointer" class="table table-bordered">
+                            <colgroup></colgroup>
+                            <colgroup></colgroup>
+                            <colgroup></colgroup>
+                            <colgroup></colgroup>
+                            <colgroup></colgroup>
+                            <colgroup></colgroup>
+                            <colgroup></colgroup>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>\(\displaystyle{n}\)</td>
+                                    <td>\(\displaystyle{\bar{\cssId{xMEAN}{x}}}\)</td>
+                                    <td>\(\displaystyle{\bar{\cssId{yMEAN}{y}}}\)</td>
+                                    <td>\(\displaystyle{\hat{\cssId{BETA0}{B_{0}}}}\)</td>
+                                    <td>\(\displaystyle{\hat{\cssId{BETA1}{B_{1}}}}\)</td>
+                                    <td>\(\displaystyle{SSE}\)</td>
+                                </tr>
+                                <tr>
+                                    <td>Model</td>
+                                    <td id="sampleSizeValue"></td>
+                                    <td id="xMeanValue"></td>
+                                    <td id="yMeanValue"></td>
+                                    <td id="beta0Value"></td>
+                                    <td id="beta1Value"></td>
+                                    <td id="sseValue"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id="defaultRegresion" class="explanation">
+                        </div>
+                        <div id="sampleSize" class="explanation" style="display:none">
+                            <p>\(n\) is the sample size. This is simply the number of data points in the given dataset.</p>
+                        </div>
+                        <div id="xMean" class="explanation" style="display:none">
+                            <p>\(\bar{x}\) is the mean value of the x data. It is defined mathematically as the following:</p>
+                            $$\bar{x} = \sum_{i=1}^{n}\dfrac{x_{i}}{n}$$
+                        </div>
+                        <div id="yMean" class="explanation" style="display:none">
+                            <p>\(\bar{y}\) is the mean value of the y data. It is defined mathematically as the following:</p>
+                            $$\bar{y} = \sum_{i=1}^{n}\dfrac{y_{i}}{n}$$
+                        </div>
+                        <div id="beta0" class="explanation" style="display:none">
+                            <p>\(\hat{B_{0}}\) is the y intercept of the regression line. The current estimate has a variance of <span id="beta0STD">__</span>. It is defined mathematically as the following:</p>
+                            $$\hat{B_{0}} = \bar{y} - \hat{B_{1}}\bar{x}$$
+                        </div>
+                        <div id="beta1" class="explanation" style="display:none">
+                            <p>\(\hat{B_{1}}\) is the slope of the regression line. The current estimate has a variance of <span id="beta1STD">__</span>. It is defined mathematically as the following:</p>
+                            $$\hat{B_{1}} = \dfrac{S_{xy}}{S_{xx}}$$
+                        </div>
+                        <div id="sse" class="explanation" style="display:none">
+                            <p>\(SSE\) is an abbreviation for the sum of squared errors which is the sum of the square residuals. It is defined mathematically as the following:</p>
+                            $$SSE = \sum_{i=1}^{n}\Big{(}y_{i} - \big{(}\hat{B_{0}} + \hat{B_{1}}x_{i}\big{)}\Big{)}^{2}$$
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="section2">
+            </div>
+            <div id="section3">
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="col-right">
+
+        <div class="visualization-section" id="section-1">
+            <div class="visualization-wrapper" id="svg_ols"></div>
+        </div>
+
+    </div>
+
+    <!-- Share CSS and JavaScript -->
+    <link rel="stylesheet" type="text/css" href="../css/jssocials.css" />
+    <link rel="stylesheet" type="text/css" href="../css/jssocials-theme-flat.css" />
+    <script src="../js/jssocials.min.js"></script>
+    <script>
+        $("#share").jsSocials({
+            showLabel: false,
+            showCount: false,
+            shareIn: "popup",
+            shares: ["email", "twitter", "facebook", "googleplus", "linkedin"]
+        });
+
+        $(".languageSetting").change(function() {
+          var option = $(this).find('option:selected');
+          window.location.href = option.data("url");
+        });
+    </script>
+</body>
+
+</html>
