@@ -1,0 +1,120 @@
+body {
+    background-color: #ffffff;
+}
+
+.header {
+    background-color: #191919;
+    background: -webkit-linear-gradient(rgba(214, 239, 250, 1), rgba(214, 239, 250, 1), rgba(214, 239, 250, 0));
+    background: -o-linear-gradient(rgba(214, 239, 250, 1), rgba(214, 239, 250, 1), rgba(214, 239, 250, 0));
+    background: -moz-linear-gradient(rgba(214, 239, 250, 1), rgba(214, 239, 250, 1), rgba(214, 239, 250, 0));
+    background: linear-gradient(rgba(214, 239, 250, 1), rgba(214, 239, 250, 1), rgba(214, 239, 250, 0));
+}
+
+.col-left {
+    background-color: #191919;
+}
+
+.action-buttons ul a li:hover {
+    color: #1B92C4;
+}
+
+#next-chapter-color:hover {
+    background-color: #46C8B2;
+}
+
+@media screen and (min-width: 750px) {
+    #bp {
+        display: block;
+    }
+
+    #cp,
+    #ra,
+    #pd,
+    #fi,
+    #bi {
+        display: none;
+    }
+}
+
+#cardWrapper {
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#coinButtons {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.blur-out {
+    -webkit-filter: blur(8px);
+    opacity: 0.1;
+    -webkit-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+}
+
+#coin {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background-image: url(./img/head.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: block;
+}
+
+.Observed rect {
+    fill: #00d0a1;
+}
+
+.True rect {
+    fill: #64bdff;
+    cursor: row-resize;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: "Helvetica Neue";
+    font-size: 11px;
+    fill: black;
+}
+
+/* @media screen and (max-width: 680px) {
+    #coinWrapper {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 680px) {
+    #coinWrapper {
+        display: inline-flex;
+    }
+
+    .button-1 {
+        width: 7em;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    input[type=checkbox]+label {
+        height: 5em;
+        padding: 5% 1%;
+    }
+} */
+
+/* Add margin to move visualization down */
+#barCoin {
+    margin-top: 250px; /* Adjust the value to your desired margin */
+    max-width: 600px; /* Set maximum width */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+}
